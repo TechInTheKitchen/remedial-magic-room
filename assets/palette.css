@@ -1,0 +1,55 @@
+/* Prisms Handbook: midnight study halls, parchment, and enchanted ink.
+   Uses the reader's built-in palette variables and light-mode selector. */
+:root {
+  color-scheme: dark;
+  --bg: #1c1824;
+  --surface: #272132;
+  --surface-2: #342b40;
+  --ink: #f4ecdc;
+  --muted: #c7bccb;
+  --faint: #aa9caf;
+  --line: #554660;
+  --accent: #e1bf7a;
+  --accent-soft: #3b302e;
+  --danger: #efa095;
+  --success: #acd09f;
+  --important: #c9b0ed;
+  --warning: #edc17d;
+  --shadow-color: rgba(10, 6, 17, .36);
+  --reader-shadow: rgba(10, 6, 17, .26);
+  --scrim-color: rgba(10, 6, 17, .65);
+  --reader-panel: rgba(39, 33, 50, .98);
+  --reader-edge: rgba(225, 191, 122, .24);
+  --page-background-image: none;
+  --page-background-wash: rgba(28, 24, 36, .88);
+  --pdf-background: #ffffff;
+  --print-background: #ffffff;
+  --print-ink: #000000;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #e9dfcc;
+  --surface: #faf3e5;
+  --surface-2: #eee2ce;
+  --ink: #302438;
+  --muted: #625266;
+  --faint: #6b586f;
+  --line: #c9b99e;
+  --accent: #67477f;
+  --accent-soft: #ece2ef;
+  --danger: #963f39;
+  --success: #42683c;
+  --important: #704b91;
+  --warning: #855817;
+  --shadow-color: rgba(58, 39, 52, .15);
+  --reader-shadow: rgba(58, 39, 52, .09);
+  --scrim-color: rgba(36, 24, 43, .42);
+  --reader-panel: rgba(250, 243, 229, .98);
+  --reader-edge: rgba(103, 71, 127, .22);
+  --page-background-image: none;
+  --page-background-wash: rgba(233, 223, 204, .90);
+  --pdf-background: #ffffff;
+  --print-background: #ffffff;
+  --print-ink: #000000;
+}

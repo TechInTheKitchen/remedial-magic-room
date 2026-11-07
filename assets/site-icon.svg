@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="wand-title wand-desc">
+  <title id="wand-title">Remedial Magic — broken wand</title>
+  <desc id="wand-desc">A golden wand snapped into two pieces, with three loose splinters floating in the gap.</desc>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#1c1824"/>
+  <!-- Handle and shaft end in an uneven, splintered break. -->
+  <path d="M13 47 26 34 29 35 28 30 33 32 34 37 19 53Z" fill="#e1bf7a"/>
+  <path d="m15 45 6 6" fill="none" stroke="#67477f" stroke-width="3"/>
+  <!-- The detached tip is offset from the lower shaft. -->
+  <path d="m38 27-1-5 4 1 9-10a3 3 0 0 1 4 4L44 29l-1-4Z" fill="#e1bf7a"/>
+  <!-- Distinct fragments at the break, visible at small icon sizes. -->
+  <path d="m31 23 4 2-3 3Z" fill="#f4ecdc"/>
+  <path d="m36 31 4-2-1 5Z" fill="#e1bf7a"/>
+  <path d="m25 26 3-2 1 4Z" fill="#c9b0ed"/>
+</svg>
