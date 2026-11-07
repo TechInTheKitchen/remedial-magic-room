@@ -104,7 +104,7 @@ function snapshot() {
 function startTable() {
   active = true; $('setup').hidden = true; $('session').hidden = false;
   $('mode').textContent = role === 'demo' ? 'LOCAL TEST · NO NETWORK' : role === 'host' ? 'GM SESSION' : 'PLAYER SESSION';
-  $('invite').hidden = role !== 'host';
+  $('invite').hidden = role !== 'host';$('invite-qr').hidden=role!=='host'||socket?.readyState!==WebSocket.OPEN;
   $('table-title').textContent=tableName||(role==='host'?'Party tracker':'Your student record');
   render();
 }
@@ -323,8 +323,9 @@ $('host').onclick = () => connect('host'); $('join').onclick = () => connect('pl
 $('demo').onclick=async()=>{await chooseSaved('player');role='demo';if(!players[localId])players[localId]=ownCharacter||character($('name').value.trim()||'Rowan');startTable();status('Local student sheet. No signaling messages are sent.');};
 $('restore').onclick=async()=>{saveChoiceMade=false;await chooseSaved(hostId?'player':'host');role=hostId?'demo':'host';startTable();$('invite').hidden=true;status('Saved data opened offline. Leave and create/join a room to connect.');};
 $('suspicion').onchange=()=>{if(role==='player')return;suspicion=Math.max(0,Math.min(6,Number($('suspicion').value)||0));snapshot();};
+function invitationURL(){const url=new URL(location.href);url.hash=new URLSearchParams({host:hostId,token}).toString();return url;}
 $('invite').onclick = async () => {
-  const url = new URL(location.href); url.hash = new URLSearchParams({host:hostId,token}).toString();
+  const url=invitationURL();
   try { await navigator.clipboard.writeText(url.href); status('Invitation copied. Players need the same publishable key configured.'); } catch { prompt('Copy this invitation link',url.href); }
 };
 $('export').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(saveState(),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='remedial-magic-save.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
@@ -358,3 +359,19 @@ if((hostId?saved:gmSaved)?.players)status('Saved data detected. You will be aske
 
 
 
+
+let qrEncoderPromise;
+function loadQREncoder(){
+ if(!qrEncoderPromise)qrEncoderPromise=new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='assets/vendor/qrcode-generator/qrcode.js';script.onload=resolve;script.onerror=()=>{qrEncoderPromise=null;script.remove();reject(Error('Could not load QR encoder.'));};document.head.append(script);});
+ return qrEncoderPromise;
+}
+$('invite-qr').onclick=async()=>{
+ if(role!=='host'||!hostId||!token||socket?.readyState!==WebSocket.OPEN)return status('Create a connected GM room before sharing a QR code.');
+ try{
+  await loadQREncoder();const url=invitationURL();const code=window.qrcode(0,'M');code.addData(url.href);code.make();
+  const dialog=document.createElement('dialog');dialog.className='save-dialog qr-dialog';const title=document.createElement('h2');title.textContent='Join '+(tableName||'this table');
+  const canvas=document.createElement('canvas'),modules=code.getModuleCount(),scale=6,margin=4;canvas.width=canvas.height=(modules+margin*2)*scale;canvas.setAttribute('role','img');canvas.setAttribute('aria-label','Scan to join '+(tableName||'the GM session'));const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#000';for(let row=0;row<modules;row++)for(let col=0;col<modules;col++)if(code.isDark(row,col))ctx.fillRect((col+margin)*scale,(row+margin)*scale,scale,scale);
+  const note=document.createElement('p');note.textContent=['localhost','127.0.0.1'].includes(url.hostname)?'This is a local preview link. A phone cannot join your computer through localhost. Use the deployed custom domain for mobile joining.':'Scan with your phone camera to join. Keep the GM session open.';
+  const link=document.createElement('a');link.href=url.href;link.textContent='Open invitation link';const close=document.createElement('button');close.textContent='Close';close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());dialog.append(title,canvas,note,link,close);document.body.append(dialog);dialog.showModal();
+ }catch(error){status(error.message);}
+};

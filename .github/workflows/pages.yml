@@ -22,7 +22,7 @@ jobs:
       - name: Stage static files
         run: |
           mkdir -p _site
-          cp index.html .nojekyll THIRD-PARTY-NOTICES.md TEMPLATE-LICENSE _site/
+          cp CNAME index.html .nojekyll THIRD-PARTY-NOTICES.md TEMPLATE-LICENSE _site/
           cp -r assets licenses _site/
       - uses: actions/upload-pages-artifact@v3
         with:

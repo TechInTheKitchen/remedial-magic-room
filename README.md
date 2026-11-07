@@ -39,3 +39,10 @@ Create GM room creates no character. The GM sees a read-only party tracker: stud
 Three.js 0.180.0 and cannon-es 0.20.0 are pinned local browser modules under assets/vendor. Original MIT notices are in licenses/ and THIRD-PARTY-NOTICES.md; they ship with the Pages artifact. No npm/build is required to run the vendored app. The libraries load lazily on the first animated roll (about 2.35 MB uncompressed), then browser module caching reuses them during the visit. Textures are generated with canvas; no dice images or remote CDNs are requested.
 
 Dice collide in a local physics world. The settled upward face supplies the result; tilted dice are automatically tossed again, up to three attempts. Timeout, unavailable WebGL, and reduced-motion preferences use the existing random-face fallback. Only final dice data is saved/shared, with no animation-frame networking. GPU resources are disposed after each roll. The 3D tray is transient; the persistent result is shown as compact dice and a text summary. Browser QA verified a complete five-die physical roll and saved results; six-face orientation and cocked-die checks also pass.
+
+
+## Custom domain and QR invitations
+
+Production domain: https://remedialmagicroom.the-kitchen.dev . CNAME is included in the Pages artifact. In repository Settings → Pages set the custom domain to remedialmagicroom.the-kitchen.dev and enable Enforce HTTPS when available. At your DNS provider add CNAME host `remedialmagicroom` targeting `techinthekitchen.github.io` (no repository path). The app keeps relative assets and uses its current origin for invitation links, so both the custom domain and GitHub Pages URL work. Localhost previews deliberately keep localhost links and warn that phones cannot join them.
+
+The GM's Show join QR code button encodes the same invitation as Copy invitation link, using the local MIT-licensed qrcode-generator 1.4.4. No link is sent to a QR service and opening the QR dialog sends no signaling messages. A new GM session requires a new QR code.
